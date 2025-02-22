@@ -145,7 +145,7 @@ Traditional RAG systems separate retrieval and reasoning into distinct steps, le
 
 #### Integration with Pathway
 
-We extended the BaseRAGQuestionAnswerer class and integrated the interleaved retrieval and reasoning to develop the InterleavedRAGQuestionAnswerer class. This class can make use of any Pathway VectorStore client to perform retrieval. We also took the liberty of extending the current LLM services to include GroqChat Models by developing the GroqLLM Class. 
+We extended the BaseRAGQuestionAnswerer class and integrated the interleaved retrieval and reasoning to develop the <span style="color:blue">**InterleavedRAGQuestionAnswerer** </span> class. This class can make use of any <span style="color:blue">sPathway VectorStore client </span> to perform retrieval. We also took the liberty of extending the current LLM services to include GroqChat Models by developing the <span style="color:blue">GroqLLM </span> Class. 
 
 ### Benchmarking and Results
 
