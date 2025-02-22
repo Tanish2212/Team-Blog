@@ -3,21 +3,21 @@
 
 ## Introduction
 
-In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative LLMs often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
+In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative LLM often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
 
 Here is where Retrieval-Augmented Generation (RAG) systems come into play. These systems have emerged as a promising solution, but they too have their limitations. In this blog, we’ll explore how we’ve developed a **Dynamic Agentic RAG System** specifically designed for long, intricate legal and financial documents. This system not only addresses the shortcomings of traditional RAG systems but also introduces novel approaches to retrieval, reasoning, and memory management.
 
 ## Why RAG? The Need for Dynamic Retrieval and Reasoning
 
-### The Limitations of Traditional LLMs
+### The Limitations of Traditional LLM
 
-Imagine asking ChatGPT about a niche financial law that was recently passed. The LLMs wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the LLMs is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
+Imagine asking ChatGPT about a niche financial law that was recently passed. The LLM wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the LLM is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
 
 ![Traditional RAG System](images/RAG_Image.png)
 
 ### Why RAG is Essential
 
-1. **LLM Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for LLMs to store all relevant information in their memory.
+1. **LLM Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for LLM to store all relevant information in their memory.
 2. **Constant Data Creation**: New data is continuously being generated, and RAG ensures that the AI can access the most up-to-date information.
 3. **Factual and Grounded Responses**: By retrieving information from external sources, RAG systems provide responses that are more factual and grounded in reality.
 
@@ -135,12 +135,17 @@ Traditional RAG systems separate retrieval and reasoning into distinct steps, le
 4. **LLM Refines the Thought**: The retrieved information is processed, and the LLM generates further reasoning.
 5. **Interleaving Process**: This cycle of retrieval and reasoning continues iteratively, refining the knowledge step by step.
 6. **Final Answer**: After sufficient iterations, the LLM produces a final, well-informed answer.
+7. **Human in the Loop** : Once the final answer is received, we ask the user for feedback; if the user is not satisfied, the entire procedure is repeated again.
 
 #### Why Interleaving is Useful
 
 - **Dynamic Refinement**: It allows the LLM to dynamically refine its reasoning based on retrieved information.
 - **Reduced Hallucination**: By grounding responses in real-time knowledge retrieval, interleaving reduces the likelihood of the LLM generating incorrect or hallucinated responses.
 - **Improved Performance**: Interleaving significantly improves performance in multi-step reasoning tasks, especially for complex queries.
+
+#### Integration with Pathway
+
+We extended the BaseRAGQuestionAnswerer class and integrated the interleaved retrieval and reasoning to develop the InterleavedRAGQuestionAnswerer class. This class can make use of any Pathway VectorStore client to perform retrieval. We also took the liberty of extending the current LLM services to include GroqChat Models by developing the GroqLLM Class. 
 
 ### Benchmarking and Results
 
@@ -155,7 +160,6 @@ To validate our approach, we benchmarked different retrieval techniques:
 </p>
 
 
-   
 
 We also experimented with various reasoning methods:
 
@@ -258,6 +262,9 @@ In the real world, it can be expected that the user would have multiple queries 
 1. **Conversational Module** : This is a module that supports human-in-the-loop in order to answer any follow-up queries that the user may have.  The follow up query is requested from the user and we incorporate the most relevant answers that have already been generated by the Supervisor with the help of the Supervisor Memory Module in the follow-up query.  
 2. **Supervisor Memory Module** :  This memory module is implemented as a vector index over the previous history of generated supervisor answers. Once a follow up query is received, we perform retrieval over the memory module and provide the top-k most similar answers along with the follow-up query to aid in rapid-answering of the same.
 
+### Integration with Pathway
+
+We developed a new CodeAndReasoningAgent within Pathway’s question_answering module for tool reasoning, that implements the features of the C&R agent described earlier; Chain of Function Call, handling of silent API errors and python syntax errors, and dynamic tool generation.
 
 ## Conclusion
 
