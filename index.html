@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Agentic RAG System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      max-width: 800px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+    h1, h2, h3, h4 {
+      color: #333;
+    }
+    ul, ol {
+      margin: 0 0 1em 1.5em;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+    .center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Introduction</h2>
+  <p>
+    In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative AI models often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
+  </p>
+  <p>
+    Here is where Retrieval-Augmented Generation (RAG) systems come into play. These systems have emerged as a promising solution, but they too have their limitations. In this blog, we’ll explore how we’ve developed a <strong>Dynamic Agentic RAG System</strong> specifically designed for long, intricate legal and financial documents. This system not only addresses the shortcomings of traditional RAG systems but also introduces novel approaches to retrieval, reasoning, and memory management.
+  </p>
+
+  <h2>Why RAG? The Need for Dynamic Retrieval and Reasoning</h2>
+
+  <h3>The Limitations of Traditional AI Models</h3>
+  <p>
+    Imagine asking ChatGPT about a niche financial law that was recently passed. The model wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the model is an expensive option. This is where <strong>RAG</strong> comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
+  </p>
+  <p class="center">
+    <img src="images/RAG_Image.png" alt="Traditional RAG System">
+  </p>
+
+  <h3>Why RAG is Essential</h3>
+  <ol>
+    <li><strong>AI Models Can’t Store Everything</strong>: The sheer volume of data in legal and financial domains makes it impossible for AI models to store all relevant information in their memory.</li>
+    <li><strong>Constant Data Creation</strong>: New data is continuously being generated, and RAG ensures that the AI can access the most up-to-date information.</li>
+    <li><strong>Factual and Grounded Responses</strong>: By retrieving information from external sources, RAG systems provide responses that are more factual and grounded in reality.</li>
+  </ol>
+
+  <h3>The Problem with Traditional RAG Systems</h3>
+  <p>
+    Traditional RAG systems often retrieve information indiscriminately, failing to adapt dynamically based on query complexity. This inefficiency is particularly problematic in financial and legal contexts, where data relevancy is critical. Moreover, these systems treat retrieval and reasoning as separate entities, first performing context retrieval and then providing the context as a prompt to the LLM for reasoning. This approach falls short when dealing with complex multi-hop queries that require interleaved retrieval and reasoning.
+  </p>
+
+  <h2>Introducing the Dynamic Agentic RAG System</h2>
+
+  <h3>A Multi-Agent Approach</h3>
+  <p>
+    To address these challenges, we adopted a <strong>multi-agent approach</strong>. In this system, different AI agents specialize in distinct tasks, working together to achieve a common goal. This approach introduces specialization, allowing each agent to focus on a specific aspect of the retrieval and reasoning process.
+  </p>
+
+  <h4>What Are Agents?</h4>
+  <p>
+    Agents are autonomous systems that analyze and act based on their environment to achieve specific goals. They can retrieve, process, and synthesize information, making decisions dynamically rather than following rigid rules. In our system, we have multiple agents, each specializing in tasks like retrieval, reasoning, and tool handling.
+  </p>
+
+  <h3>The Role of Tools</h3>
+  <p>
+    In addition to retrieval and reasoning, our system incorporates <strong>tools</strong>—modular add-ons that enhance the system’s capabilities. Tools can include calculators, web search modules, chart generators, and more. These tools not only increase the accuracy of responses but also reduce human intervention, allowing the AI to surpass its inherent limitations.
+  </p>
+
+  <h3>Pathway: The Backbone of Our System</h3>
+  <p>
+    For such an intelligent system to operate at scale, it requires an underlying infrastructure capable of handling massive data flows and real-time computations. <strong>Pathway</strong> serves as the backbone of our system, offering:
+  </p>
+  <ul>
+    <li><strong>High-speed data processing</strong> to ensure minimal latency.</li>
+    <li><strong>Real-time retrieval</strong> for dynamic knowledge updates.</li>
+    <li><strong>Multi-modal data handling</strong> to process various types of data.</li>
+    <li><strong>Simplified deployment</strong> with Docker and Kubernetes.</li>
+  </ul>
+  <p>
+    With Pathway, our Dynamic RAG system can operate seamlessly across vast datasets, continuously learning and adapting to new information without compromising speed or accuracy.
+  </p>
+
+  <h2>System Architecture and Workflow</h2>
+  <p class="center">
+    <img src="images/system_architecture.png" alt="System Architecture">
+  </p>
+  <h3>Overview of the Workflow</h3>
+  <p>
+    The workflow of our Dynamic Agentic RAG System begins with the user providing a query (Q), a set of documents (D), and a set of tools (T). The system then follows these steps:
+  </p>
+  <ol>
+    <li><strong>Supervisor Agent Activation</strong>: The Supervisor Agent activates the Code &amp; Reasoning (C&amp;R) Agent, which can interact with tools and the RAG Agent.</li>
+    <li><strong>Document Indexing</strong>: The RAG Agent builds a document index for D using Pathway’s VectorStore Server.</li>
+    <li><strong>Page-Level Retrieval</strong>: The system uses Jina Embeddings to perform page-level retrieval, extracting the top-k most relevant pages for Q.</li>
+    <li><strong>Hierarchical Indexing</strong>: The retrieved pages are chunked and indexed using RAPTOR, forming a hierarchical structure over the summary of the chunks.</li>
+    <li><strong>Interleaved Retrieval and Reasoning</strong>: The RAG Agent uses an interleaving approach to iterate between reasoning and retrieval, performing multi-hop contextual reasoning.</li>
+    <li><strong>Tool-Specific Tasks</strong>: The C&amp;R Agent utilizes tools for any tool-specific tasks based on the RAG Agent’s response and user query.</li>
+    <li><strong>Response Consolidation</strong>: The Supervisor Agent consolidates the outputs and returns the final response to the user.</li>
+  </ol>
+
+  <h2>RAG Agent</h2>
+  <h3>Two-Stage Retrieval Pipeline</h3>
+  <p class="center">
+    <img src="images/retriever.png" alt="Two-Stage Retrieval Pipeline">
+  </p>
+  <p>
+    Retrieving information from large documents, such as financial and legal reports, is challenging due to their inherent hierarchies and diverse entities like tables, charts, and images. To address this, we designed a custom <strong>two-stage retrieval pipeline</strong>:
+  </p>
+
+  <h4>1. Page-Level Retrieval using Jina Embeddings</h4>
+  <p>
+    We use Jina Embeddings-v3, which is specifically trained for embedding generation in long-context document retrieval. These embeddings are optimized for semantic similarity in multi-page document searches, making them well-suited for page-level retrieval. Given a query <em>Q</em> and a document <em>D</em> with <em>N</em> pages, we generate query embeddings and page-level embeddings, indexing them in FAISS for efficient retrieval of the most relevant pages.
+  </p>
+  <ul>
+    <li><strong>Task-Specific LoRA</strong>: Jina employs a <strong>Mixture of Experts</strong> approach with five LoRA adapters—<code>retrieval.query</code>, <code>retrieval.passage</code>, <code>separation</code>, <code>classification</code>, and <code>text-matching</code>. Each adapter is optimized for different subtasks like query embedding, passage retrieval, and semantic similarity, ensuring high-quality embeddings.</li>
+    <li><strong>Alibi for Context Scaling</strong>: Alibi (Attention with Linear Biases) helps extend retrieval capabilities by enabling models trained on short contexts to generalize effectively to longer documents.</li>
+    <li><strong>Integration with Pathway</strong>: We have extended the <code>BaseEmbedded</code> class to incorporate Jina Embeddings using API calls.</li>
+  </ul>
+
+  <h4>2. Page-Level Preprocessing using Unstructured</h4>
+  <p>
+    Documents often contain tables and images that hold critical information. To capture this data, we use the <strong>Unstructured library</strong> to parse the retrieved pages into images, plain text, and tables, each with associated metadata (page number). The extracted data is then summarized by an LLM, recombined page-wise, and indexed.
+  </p>
+
+  <h4>3. RAPTOR Index for Context Retrieval</h4>
+  <p>
+    <strong>RAPTOR</strong> (Recursive Abstractive Processing for Tree-Organized Retrieval) is a bottom-up indexing approach that segments a document into text chunks, embeds them, clusters the embeddings, and summarizes each cluster using an LLM, forming a hierarchical tree structure. This method significantly reduces indexing time and enables structured retrieval at multiple levels.
+  </p>
+  <p>
+    Unlike traditional chunking methods, which divide text into fixed, independent segments without capturing semantic links, RAPTOR ensures that related chunks are meaningfully connected. Since information in documents is inherently interconnected, treating chunks as isolated units can lead to inefficient retrieval. RAPTOR addresses this by clustering semantically related chunks and structuring them hierarchically, allowing for context-aware retrieval.
+  </p>
+  <ul>
+    <li><strong>Integration with Pathway</strong>: Integration with Pathway requires metadata-level filtering to enable structured retrieval across hierarchical clusters.</li>
+  </ul>
+
+  <h3>Fine-Tuning LLMs for Domain-Specific Tasks</h3>
+  <p class="center">
+    <img src="images/summary_module.png" alt="Each document chunk is summarized and added to the Pathway vector store" width="500">
+  </p>
+  <p>
+    During our experiments, we observed that a significant amount of API compute was being consumed in generating summaries for the RAPTOR module. This made the retrieval process costly and dependent on external APIs, creating scalability issues. To address this, we explored fine-tuning a smaller model to perform high-quality summarization locally.
+  </p>
+  <p>
+    While large models like <strong>LLaMA 2-70B</strong> or <strong>405B</strong> are powerful, they are often resource-intensive and impractical for cost-efficient inference. Instead, we fine-tuned <strong>LLaMA-7B</strong> using <strong>Parameter Efficient Fine-Tuning (PEFT)</strong> with <strong>LoRA adapters</strong> on an <strong>Nvidia A100</strong>. The objective was to generate high-quality summaries tailored to the <strong>CUAD dataset</strong> (Contract Understanding Dataset), which focuses on legal document understanding.
+  </p>
+  <p>
+    By fine-tuning a smaller model, we achieved <strong>on-par performance with larger models</strong> while significantly reducing inference costs. In some cases, our locally deployed summarizer even <strong>outperformed</strong> API-based solutions, making it a more scalable and efficient alternative.
+  </p>
+  <p class="center">
+    <img src="images/Finetuning.png" alt="Finetuning">
+  </p>
+
+  <h3>Interleaved Reasoning: Finding the Balance Between Retrieval and Synthesis</h3>
+  <p class="center">
+    <img src="images/interleaving.png" alt="Interleaving approach iterating between retrieval and reasoning">
+  </p>
+
+  <h3>The Need for Interleaved Retrieval and Reasoning</h3>
+  <p>
+    Why do we need specialized reasoning techniques when RAG already exists? The answer lies in its limitations—traditional RAG lacks <strong>deduction and synthesis capabilities</strong>, which are crucial for handling complex legal and financial queries.
+  </p>
+  <p>
+    Multi-hop queries require <strong>multi-step retrieval and reasoning over intermediate retrieval steps</strong>—a challenge that basic retrieval-augmented generation (RAG) struggles to handle. Several reasoning paradigms have attempted to bridge this gap:
+  </p>
+  <ul>
+    <li><strong>Chain of Thought (CoT)</strong>: Encourages step-by-step reasoning by breaking problems into logical steps. However, it follows a linear path, making it inefficient for multi-hop queries that require branching logic.</li>
+    <li><strong>Tree of Thought (ToT)</strong>: Extends CoT by exploring multiple reasoning paths, similar to a decision tree. While more flexible, ToT introduces redundancy by retrieving unnecessary information and increases token usage, especially when a reasoning path leads to a dead end.</li>
+    <li><strong>Graph-Based Reasoning</strong>: We also explored graph-based reasoning with ROG (Reasoning on Graphs). While effective for structured knowledge graphs (KGs), it struggled with sparsity issues. Many LLM-driven KG generation techniques fail to capture implicit logical dependencies in financial and legal documents, limiting their reliability.</li>
+  </ul>
+
+  <h4>Interleaving RAG Reasoning</h4>
+  <p>
+    Traditional RAG systems separate retrieval and reasoning into distinct steps, leading to inefficiencies in complex multi-hop queries. Our system introduces a novel <strong>interleaving RAG reasoning approach</strong>, allowing LLMs to dynamically decide when to retrieve and when to reason. By integrating retrieval within the reasoning process, our approach eliminates redundant lookups, efficiently resolving multi-hop contextual queries.
+  </p>
+
+  <h4>How Interleaving Works</h4>
+  <ol>
+    <li><strong>Query Input</strong>: The process starts with a user query.</li>
+    <li><strong>LLM Generates a Thought</strong>: The LLM produces an initial reasoning step.</li>
+    <li><strong>Retrieval Step</strong>: The model retrieves relevant documents from an index based on the reasoning step.</li>
+    <li><strong>LLM Refines the Thought</strong>: The retrieved information is processed, and the LLM generates further reasoning.</li>
+    <li><strong>Interleaving Process</strong>: This cycle of retrieval and reasoning continues iteratively, refining the knowledge step by step.</li>
+    <li><strong>Final Answer</strong>: After sufficient iterations, the LLM produces a final, well-informed answer.</li>
+  </ol>
+
+  <h4>Why Interleaving is Useful</h4>
+  <ul>
+    <li><strong>Dynamic Refinement</strong>: It allows the model to dynamically refine its reasoning based on retrieved information.</li>
+    <li><strong>Reduced Hallucination</strong>: By grounding responses in real-time knowledge retrieval, interleaving reduces the likelihood of the model generating incorrect or hallucinated responses.</li>
+    <li><strong>Improved Performance</strong>: Interleaving significantly improves performance in multi-step reasoning tasks, especially for complex queries.</li>
+  </ul>
+
+  <h3>Benchmarking and Results</h3>
+  <p>
+    To validate our approach, we benchmarked different retrieval techniques:
+  </p>
+  <ul>
+    <li><strong>Vanilla RAG and its variants</strong> performed poorly in both Mean Reciprocal Rank (MRR) and time.</li>
+    <li><strong>RAPTOR + Jina Embeddings</strong> drastically outperformed traditional chunking, delivering high-precision retrieval without compromising speed.</li>
+  </ul>
+  <p class="center">
+    <img src="images/Embedding_results.png" alt="Embedding Results" width="45%" height="200px" style="margin-right: 5%;">
+    <img src="images/Retrival_results.png" alt="Retrieval Results" width="45%" height="200px">
+  </p>
+  <p>
+    We also experimented with various reasoning methods:
+  </p>
+  <ul>
+    <li><strong>Knowledge Graphs (KGs)</strong>: While effective when fully structured, KGs struggle with sparse data scenarios.</li>
+    <li><strong>Interleaving RAG</strong>: This approach bridges the gap by dynamically balancing retrieval and reasoning, outperforming traditional methods like Chain of Thought (CoT) and Tree of Thought (ToT).</li>
+  </ul>
+  <p class="center">
+    <img src="images/Reason.png" alt="Reason" width="500">
+  </p>
+
+  <h3>Scaling Retrieval Efficiency with HNSW</h3>
+  <p class="center">
+    <img src="images/cache.png" alt="Retrieval Memory Cache using Utility HNSW Graph">
+  </p>
+  <h4>Dynamic Memory Cache Module</h4>
+  <p>
+    To enhance retrieval efficiency in long-document RAG, we built a <strong>Dynamic Memory Cache Module</strong> using <strong>HNSW (Hierarchical Navigable Small World)</strong> for fast approximate nearest neighbor search.
+  </p>
+  <p>
+    For each retrieval query, we extract the top-k most relevant chunks and generate utility queries based on their content. These queries are cross-referenced with the existing query bank to eliminate redundancy. We then construct a dynamic memory cache using <strong>nmslib</strong>, building an HNSW graph over the utility queries.
+  </p>
+  <p>
+    This enables efficient retrieval by checking the query bank for similar queries and directly accessing relevant chunks if a match is found. HNSW’s multi-layered graph structure supports real-time updates, making it well-suited for dynamic RAG.
+  </p>
+  <h4>Why HNSW?</h4>
+  <ul>
+    <li><strong>Efficiency in High Dimensions</strong>: Unlike tree-based methods that suffer in high dimensions, HNSW maintains efficiency.</li>
+    <li><strong>Real-Time Indexing</strong>: HNSW supports real-time creation and modification of graph indexes, ideal for dynamic systems.</li>
+    <li><strong>Memory Efficiency</strong>: It avoids brute-force comparisons and stores embeddings in a compressed form, reducing storage overhead.</li>
+  </ul>
+  <h4>How We Use HNSW in Dynamic Memory</h4>
+  <ul>
+    <li><strong>Metadata Tagging</strong>: QA pairs, related queries, and retrieved chunks enrich the knowledge base.</li>
+    <li><strong>User-Adaptive Learning</strong>: The system adapts to query history over time.</li>
+    <li><strong>Lightning-Fast Follow-Ups</strong>: Stored query embeddings speed up contextualized retrieval.</li>
+  </ul>
+  <p class="center">
+    <img src="images/folloup.png" alt="Follow Up Results">
+  </p>
+  <p>
+    By combining HNSW with interleaving RAG, we achieve ultra-fast, context-aware retrieval in follow-up queries, pushing long-document retrieval into the future.
+  </p>
+
+  <h2>Code &amp; Reasoning Agent</h2>
+  <p>
+    Given a set of tools and a problem statement, the primary task of the LLM is to determine the optimal order in which the tools should be executed to solve the given problem. Several algorithms exist for determining tool execution order. <code>React</code> and <code>Code-Driven reasoning</code> methods are the famous ones and are widely used to determine the order of tools execution.
+  </p>
+  <p>
+    <code>React</code> is fairly popular; given the list of tools, the task at hand and past observation, it generates a <code>thought</code>, after which it performs the next <code>action</code> in the form of the next tool call and then executes it, after which the LLM is asked to perform an observation keeping in mind the tool output returned. This process is repeated until the final answer is reached. Such a methodology allows for improved resistance towards tool failures, however, it demands high token counts.
+  </p>
+  <p>
+    <code>Code Driven reasoning</code> determines the exact tools, in the correct order along with appropriate inputs at once in the form of Python function calls, given the task to be performed. This allows for faster inference and token efficiency, but this method suffers from its staticity; any syntax error or tool failure renders the entire code block useless.
+  </p>
+
+  <h3>Chain of Function Call</h3>
+  <p>
+    It is critical therefore, to achieve the best of both ReAct and Code-Driven Reasoning. More specifically, we need to combine both System 1 thinking and System 2 thinking:
+  </p>
+  <ul>
+    <li><strong>System 1 reasoning</strong>: Spontaneous, stochastic, pattern based.</li>
+    <li><strong>System 2 reasoning</strong>: Slow, sequence-based, logical reasoning.</li>
+  </ul>
+  <p>
+    Analyzing the strengths and weaknesses of ReAct and Code-Driven approaches, we developed the Chain of Function Call (CoFC) method, combining the best aspects of both. The Code &amp; Reasoning Agent is based on a Chain of Function Call tool reasoning paradigm, where at each step, a single Python function call is performed, based on the provided list of tools and their description, problem statement, previous history of Python function calls and responses. Each tool call is executed using an interpreter to generate the function tool response.
+  </p>
+
+  <h2>Error Handling and Reflexion in Code &amp; Reasoning Agent</h2>
+  <p>
+    In real-world scenarios, tool failures may occur for a variety of reasons. To ensure system robustness, we have developed mechanisms to handle all kinds of tool failures effectively. These errors are broadly classified into two types:
+  </p>
+
+  <h3>1. "Loud" Tool Failures</h3>
+  <p>
+    A Loud Tool Failure occurs when executing a tool call generates a Python error or exception. Essentially, these errors are immediately visible in the form of execution failures (or loud, so to say), which makes them easier to detect. Loud tool failures can occur owing to the following causes:
+  </p>
+
+  <h4>1.1. Incorrect Python Syntax</h4>
+  <p>
+    When the LLM generates a function call, it might incorrectly assign argument types, leading to a syntax error. The generated tool call could also be incomplete, which is also a syntax error.
+  </p>
+  <p>
+    - Resolving such tool failures needs Python code correction (LLM reflexion upon the generated code).
+  </p>
+
+  <h4>1.2. Internal Tool Failure</h4>
+  <p>
+    This refers to the scenario where there is some internal failure in a tool due to issues such as server failures, wrong API keys, etc.
+  </p>
+  <p>
+    - In case of internal error, we simply remove these faulty tools.
+  </p>
+  <p class="center">
+    <img src="images/loud.png" alt="Loud Tool Failure">
+  </p>
+
+  <h3>2. Silent Tool Failures</h3>
+  <p>
+    Silent Tool Failures refer to those tool failures where the tool upon execution does not <em>raise an exception</em>, however, there exist logical inconsistencies that can lead to the failure of the entire tool reasoning procedure that follows. We elaborate on the same below:
+  </p>
+
+  <h4>2.1. Incorrect Input Argument</h4>
+  <p>
+    This refers to the scenario when the LLM performs the tool call with the correct argument types, but the exact values of the arguments may be logically inconsistent with the reasoning process up until the current point.
+  </p>
+  <p>
+    - To handle such errors, we have devised a robust mechanism that checks the exact argument values specified by the LLM and checks for any logical inconsistencies.
+  </p>
+
+  <h4>2.2. Incorrect Function Tool Response</h4>
+  <p>
+    This refers to the case where the LLM passes both the correct argument types and values to the tool, but the tool itself has <em>gone rogue</em>, that is, the returned output has no logical consistency with the reasoning procedure up until the current point.
+  </p>
+  <p>
+    - Again, to handle such errors, the critic agent checks the tool response and its consistency with the reasoning procedure up until the current point.
+  </p>
+  <p class="center">
+    <img src="images/critic.png" alt="Critic Agent">
+  </p>
+
+  <p>
+    We evaluated custom multi-hop queries on tool reasoning in the Legal and Finance domains using curated datasets: CUAD for legal texts and Finance-10k for financial reports. MetaTool (ICLR 2024), a benchmark for tool usage and selection, was used to test tasks 1 (single-tool reasoning) and 4 (multi-tool reasoning). As a baseline, we considered ReAct. Clearly, CoFC is considerably more efficient and also highly accurate. The results are illustrated in the following figures (Fig 7, 8, 9).
+  </p>
+  <p class="center">
+    <img src="images/React_vs2.png" alt="React vs CoFC" width="1100">
+  </p>
+
+  <h3>Dynamic Tool Set Enhancement</h3>
+  <p>
+    While the proposed reflexion policies effectively manage tool failures, there are scenarios where the available toolset may not contain the necessary tools for answering a user’s query, or where all relevant tools are corrupt. We propose two methods to handle such cases:
+  </p>
+  <ol>
+    <li><strong>Human-In-The-Loop</strong>: The supervisor can prompt the user to provide function tools along with proper descriptions in order to address the query.</li>
+    <li><strong>Dynamic Tool Generator Agent</strong>: If no relevant tool is available and the user does not provide one, the supervisor employs a dynamic tool generator to create real-time agentic tools tailored to the user's needs. It uses a use case driven prompt-refinement algorithm to dynamically generate the appropriate agent to mimic tool response. For a formal explanation, refer to <strong>Algo1</strong> in <strong>Appendix A</strong>.</li>
+  </ol>
+  <p class="center">
+    <img src="images/cragent1.png" alt="CR Agent">
+  </p>
+
+  <h3>Conversational Module</h3>
+  <p>
+    In the real world, it can be expected that the user would have multiple queries related to a given document. It is important to develop a component that supports conversations with the user and maintains track of the history of interactions with the user. We have developed the following modules to support conversations:
+  </p>
+  <ol>
+    <li><strong>Conversational Module</strong>: This is a module that supports human-in-the-loop in order to answer any follow-up queries that the user may have. The follow-up query is requested from the user and we incorporate the most relevant answers that have already been generated by the Supervisor with the help of the Supervisor Memory Module in the follow-up query.</li>
+    <li><strong>Supervisor Memory Module</strong>: This memory module is implemented as a vector index over the previous history of generated supervisor answers. Once a follow-up query is received, we perform retrieval over the memory module and provide the top-k most similar answers along with the follow-up query to aid in rapid answering of the same.</li>
+  </ol>
+
+  <h2>Conclusion</h2>
+  <p>
+    In this work we present a Multi-Agent Dynamic RAG framework designed for accurate handling of long legal and financial documents. It includes a RAG agent with a retrieval pipeline based on Jina Embeddings, RAPTOR indexing, and Pathway VectorStore, alongside an interleaved reasoning strategy for dynamic retrieval and reasoning decisions. A dynamic memory cache index enables fast retrieval of previously queried information. To manage complex multi-hop queries, we developed a Code &amp; Reasoning Agent that uses the RAG agent and other tools within a dynamic toolset, employing the Chain of Function Call paradigm. Robust tool failure handling, dynamic tool generation, and guardrails ensure effective query resolution while filtering offensive content.
+  </p>
+
+</body>
+</html>
