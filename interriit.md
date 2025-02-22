@@ -245,6 +245,8 @@ While the proposed reflexion policies effectively manage tool failures, there ar
 1. **Human-In-The-Loop** : The supervisor can prompt the user to provide function tools along with proper descriptions in order to address the query.   
 2. **Dynamic Tool Generator Agent :**  If no relevant tool is available and the user does not provide one, the supervisor employs a dynamic tool generator to create real-time agentic tools tailored to the user's needs. It uses a use case driven prompt-refinement algorithm to dynamically generate the appropriate agent to mimic tool response. For a formal explanation, refer to **Algo1** in **Appendix A.**
 
+
+<!-- <img src="images/cragent1.png" alt="summarizer_results" width="600"> -->
 ![CR Agent](images/cragent1.png)
 
 ### Conversational Module
