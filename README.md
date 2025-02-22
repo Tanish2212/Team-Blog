@@ -3,21 +3,21 @@
 
 ## Introduction
 
-In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative LLM often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
+In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative LLMs often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
 
 Here is where Retrieval-Augmented Generation (RAG) systems come into play. These systems have emerged as a promising solution, but they too have their limitations. In this blog, we’ll explore how we’ve developed a **Dynamic Agentic RAG System** specifically designed for long, intricate legal and financial documents. This system not only addresses the shortcomings of traditional RAG systems but also introduces novel approaches to retrieval, reasoning, and memory management.
 
 ## Why RAG? The Need for Dynamic Retrieval and Reasoning
 
-### The Limitations of Traditional LLM
+### The Limitations of Traditional LLMs
 
-Imagine asking ChatGPT about a niche financial law that was recently passed. The LLM wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the LLM is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
+Imagine asking ChatGPT about a niche financial law that was recently passed. The LLMs wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the LLMs is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
 
 ![Traditional RAG System](images/RAG_Image.png)
 
 ### Why RAG is Essential
 
-1. **LLM Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for LLM to store all relevant information in their memory.
+1. **LLM Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for LLMs to store all relevant information in their memory.
 2. **Constant Data Creation**: New data is continuously being generated, and RAG ensures that the AI can access the most up-to-date information.
 3. **Factual and Grounded Responses**: By retrieving information from external sources, RAG systems provide responses that are more factual and grounded in reality.
 
