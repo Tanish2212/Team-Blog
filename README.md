@@ -3,21 +3,21 @@
 
 ## Introduction
 
-In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative AI models often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
+In the ever-evolving landscape of artificial intelligence, the intersection of AI and enterprise applications has seen significant advancements. However, deploying AI systems that are not only intelligent but also adaptive remains a challenge, especially in sectors like finance and law where precision and up-to-date insights are paramount. Traditional generative LLM often fall short in these environments due to their static nature, outdated knowledge, and lack of real-time decision-making capabilities.
 
 Here is where Retrieval-Augmented Generation (RAG) systems come into play. These systems have emerged as a promising solution, but they too have their limitations. In this blog, we’ll explore how we’ve developed a **Dynamic Agentic RAG System** specifically designed for long, intricate legal and financial documents. This system not only addresses the shortcomings of traditional RAG systems but also introduces novel approaches to retrieval, reasoning, and memory management.
 
 ## Why RAG? The Need for Dynamic Retrieval and Reasoning
 
-### The Limitations of Traditional AI Models
+### The Limitations of Traditional LLM
 
-Imagine asking ChatGPT about a niche financial law that was recently passed. The model wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the model is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
+Imagine asking ChatGPT about a niche financial law that was recently passed. The LLM wouldn’t know about it because it was trained before the law existed. Pretraining or finetuning the LLM is an expensive option. This is where **RAG** comes into play. Instead of relying solely on pre-trained data, RAG systems retrieve relevant information from external databases or documents and use Large Language Models (LLMs) to generate contextually accurate responses.
 
 ![Traditional RAG System](images/RAG_Image.png)
 
 ### Why RAG is Essential
 
-1. **AI Models Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for AI models to store all relevant information in their memory.
+1. **LLM Can’t Store Everything**: The sheer volume of data in legal and financial domains makes it impossible for LLM to store all relevant information in their memory.
 2. **Constant Data Creation**: New data is continuously being generated, and RAG ensures that the AI can access the most up-to-date information.
 3. **Factual and Grounded Responses**: By retrieving information from external sources, RAG systems provide responses that are more factual and grounded in reality.
 
@@ -81,7 +81,7 @@ We use Jina Embeddings-v3, which is specifically trained for embedding generatio
 
 - **Task-Specific LoRA**: Jina employs a **Mixture of Experts** approach with five LoRA adapters—`retrieval.query`, `retrieval.passage`, `separation`, `classification`, and `text-matching`. Each adapter is optimized for different subtasks like query embedding, passage retrieval, and semantic similarity, ensuring high-quality embeddings.  
 
-- **Alibi for Context Scaling**: Alibi (Attention with Linear Biases) helps extend retrieval capabilities by enabling models trained on short contexts to generalize effectively to longer documents.  
+- **Alibi for Context Scaling**: Alibi (Attention with Linear Biases) helps extend retrieval capabilities by enabling LLMs trained on short contexts to generalize effectively to longer documents.  
 
 - **Integration with Pathway**: We have extended the `BaseEmbedded` class to incorporate Jina Embeddings using API calls.  
 
@@ -101,11 +101,11 @@ Unlike traditional chunking methods, which divide text into fixed, independent s
 
 ![Each document chunk is summarized and added to the Pathway vector store](images/summary_module.png)  
 
-During our experiments, we observed that a significant amount of API compute was being consumed in generating summaries for the RAPTOR module. This made the retrieval process costly and dependent on external APIs, creating scalability issues. To address this, we explored fine-tuning a smaller model to perform high-quality summarization locally.  
+During our experiments, we observed that a significant amount of API compute was being consumed in generating summaries for the RAPTOR module. This made the retrieval process costly and dependent on external APIs, creating scalability issues. To address this, we explored fine-tuning a Small Language Models to perform high-quality summarization locally.  
 
-While large models like **LLaMA 2-70B** or **405B** are powerful, they are often resource-intensive and impractical for cost-efficient inference. Instead, we fine-tuned **LLaMA-7B** using **Parameter Efficient Fine-Tuning (PEFT)** with **LoRA adapters** on an **Nvidia A100**. The objective was to generate high-quality summaries tailored to the **CUAD dataset** (Contract Understanding Dataset), which focuses on legal document understanding.  
+While LLM like **LLaMA 2-70B** or **405B** are powerful, they are often resource-intensive and impractical for cost-efficient inference. Instead, we fine-tuned **LLaMA-7B** using **Parameter Efficient Fine-Tuning (PEFT)** with **LoRA adapters** on an **Nvidia A100**. The objective was to generate high-quality summaries tailored to the **CUAD dataset** (Contract Understanding Dataset), which focuses on legal document understanding.  
 
-By fine-tuning a smaller model, we achieved **on-par performance with larger models** while significantly reducing inference costs. In some cases, our locally deployed summarizer even **outperformed** API-based solutions, making it a more scalable and efficient alternative.  
+By fine-tuning a small Language Models, we achieved **on-par performance with LLM** while significantly reducing inference costs. In some cases, our locally deployed summarizer even **outperformed** API-based solutions, making it a more scalable and efficient alternative.  
 
 <p align="center" width="100%"><img src="images/Finetuning.png" width="500"></p>
 
@@ -131,15 +131,15 @@ Traditional RAG systems separate retrieval and reasoning into distinct steps, le
 
 1. **Query Input**: The process starts with a user query.
 2. **LLM Generates a Thought**: The LLM produces an initial reasoning step.
-3. **Retrieval Step**: The model retrieves relevant documents from an index based on the reasoning step.
+3. **Retrieval Step**: The LLM retrieves relevant documents from an index based on the reasoning step.
 4. **LLM Refines the Thought**: The retrieved information is processed, and the LLM generates further reasoning.
 5. **Interleaving Process**: This cycle of retrieval and reasoning continues iteratively, refining the knowledge step by step.
 6. **Final Answer**: After sufficient iterations, the LLM produces a final, well-informed answer.
 
 #### Why Interleaving is Useful
 
-- **Dynamic Refinement**: It allows the model to dynamically refine its reasoning based on retrieved information.
-- **Reduced Hallucination**: By grounding responses in real-time knowledge retrieval, interleaving reduces the likelihood of the model generating incorrect or hallucinated responses.
+- **Dynamic Refinement**: It allows the LLM to dynamically refine its reasoning based on retrieved information.
+- **Reduced Hallucination**: By grounding responses in real-time knowledge retrieval, interleaving reduces the likelihood of the LLM generating incorrect or hallucinated responses.
 - **Improved Performance**: Interleaving significantly improves performance in multi-step reasoning tasks, especially for complex queries.
 
 ### Benchmarking and Results
